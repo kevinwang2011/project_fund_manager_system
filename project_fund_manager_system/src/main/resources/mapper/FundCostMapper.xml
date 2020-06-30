@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- created by meizx-generate-1.0  mail:meizxbj@gmail.com-->
+<mapper namespace="com.meizx.project_fund_manager_system.dao.FundCostDAO">
+
+<!-- 新增记录，会插入空值 -->
+	<insert id="insert" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		INSERT INTO fund_cost (
+			projectId,
+			projectBudget,
+			projectBalance,
+			projectTotalAmount,
+			tempBanlance,
+			thisYear,
+			whereBalance
+		)
+		VALUES (
+			#{projectId},
+			#{projectBudget},
+			#{projectBalance},
+			#{projectTotalAmount},
+			#{tempBanlance},
+			#{thisYear},
+			#{whereBalance}
+		)
+	</insert>
+
+	<insert id="insertYear" parameterType="com.meizx.project_fund_manager_system.dao.po.YearTabPO">
+		INSERT INTO yearTab (
+			allBalance,
+			thisYear
+		)
+		VALUES (
+			#{allBalance},
+			#{thisYear}
+		)
+	</insert>
+	<select id="getYear" parameterType="com.meizx.project_fund_manager_system.dao.po.YearTabPO" resultType="com.meizx.project_fund_manager_system.dao.po.YearTabPO">
+		select * from yearTab where thisYear = #{thisYear}
+	</select>
+	<select id="allBalance" parameterType="java.lang.Integer" resultType="java.lang.Double">
+		SELECT SUM(projectBudget) FROM fund_cost where thisYear = #{year} AND whereBalance !=500
+	</select>
+	<select id="projectBalance" parameterType="java.lang.String" resultType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		SELECT * FROM fund_cost where projectId = #{projectId}
+	</select>
+	<update id="updateYear" parameterType="com.meizx.project_fund_manager_system.dao.po.YearTabPO">
+		update yearTab set allBalance = #{allBalance} where thisYear = #{thisYear}
+	</update>
+
+<!-- 新增记录，不插入空值 -->
+	<insert id="insertBySelective" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		INSERT INTO fund_cost (
+			projectId,
+			projectBudget,
+			projectBalance,
+			projectTotalAmount
+		)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="projectId != null and projectId != ''">
+				#{projectId},
+			</if>
+			<if test="projectBudget != null and projectBudget != ''">
+				#{projectBudget},
+			</if>
+			<if test="projectBalance != null and projectBalance != ''">
+				#{projectBalance},
+			</if>
+			<if test="projectTotalAmount != null and projectTotalAmount != ''">
+				#{projectTotalAmount}
+			</if>
+		</trim>
+	</insert>
+
+<!--根据主键删除数据-->
+	<delete id="deleteByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		DELETE FROM fund_cost
+		<where>
+			 projectId = #{projectId}
+		</where>
+  	</delete>
+
+<!--根据 FundCost 删除数据-->
+	<delete id="delete" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		DELETE FROM fund_cost
+		<where>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId}
+			</if>
+			<if test="projectBudget != null and projectBudget != ''">
+				AND projectBudget = #{projectBudget}
+			</if>
+			<if test="projectBalance != null and projectBalance != ''">
+				AND projectBalance = #{projectBalance}
+			</if>
+			<if test="projectTotalAmount != null and projectTotalAmount != ''">
+				AND projectTotalAmount = #{projectTotalAmount}
+			</if>
+		</where>
+	</delete>
+
+<!--根据主键修改数据-->
+	<update id="updateByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		<set>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId}
+			</if>
+			<if test="projectBudget != null and projectBudget != ''">
+				,projectBudget = #{projectBudget}
+			</if>
+			<if test="projectBalance != null and projectBalance != ''">
+				,projectBalance = #{projectBalance}
+			</if>
+			<if test="projectTotalAmount != null and projectTotalAmount != ''">
+				,projectTotalAmount = #{projectTotalAmount}
+			</if>
+		</set>
+		<where>
+			projectId = #{projectId}
+		</where>
+	</update>
+
+<!--根据 FundCost 修改数据-->
+	<update id="update" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		<set>
+			<if test="projectBudget != null and projectBudget != ''">
+				projectBudget = #{projectBudget}
+			</if>
+			<if test="projectBalance != null and projectBalance != ''">
+				,projectBalance = #{projectBalance}
+			</if>
+			<if test="projectTotalAmount != null and projectTotalAmount != ''">
+				,projectTotalAmount = #{projectTotalAmount}
+			</if>
+			<if test="tempBanlance != null and tempBanlance != ''">
+				,tempBanlance = #{tempBanlance}
+			</if>
+			<if test="thisYear > 20">
+				,thisYear = #{thisYear}
+			</if>
+		</set>
+		WHERE
+			projectId = #{projectId}
+
+	</update>
+	<update id="updateRel" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		set
+				projectBalance = projectBalance - #{projectBalance},
+				projectTotalAmount = projectTotalAmount + #{projectTotalAmount}
+		WHERE
+			projectId = #{projectId}
+
+	</update>
+	<update id="updateRel1" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		set
+				projectBalance = projectBalance - #{projectBalance},
+				projectTotalAmount = projectTotalAmount + #{projectTotalAmount},
+				tempBanlance = #{tempBanlance} + tempBanlance
+		WHERE
+			projectId = #{projectId}
+
+	</update>
+	<update id="updateRel2" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		set
+				projectBalance = projectBalance - #{projectBalance},
+				projectTotalAmount = projectTotalAmount + #{projectTotalAmount},
+				tempBanlance = tempBanlance - #{tempBanlance}
+		WHERE
+			projectId = #{projectId}
+
+	</update>
+	<update id="updateTemp" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		<set>
+			<if test="tempBanlance != null and tempBanlance != ''">
+				tempBanlance = #{tempBanlance}
+			</if>
+		</set>
+		WHERE
+			projectId = #{projectId}
+
+	</update>
+	<update id="updateTemp1" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		set
+			projectBudget = projectBudget + #{tempBanlance},
+			projectBalance = projectBalance + #{tempBanlance},
+			tempBanlance = tempBanlance + #{tempBanlance}
+		WHERE
+			projectId = #{projectId}
+
+	</update>
+	<update id="updateTemp2" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		set
+			projectBudget = projectBudget - #{projectBudget},
+			projectBalance = projectBalance - #{projectBudget}
+		WHERE
+			projectId = #{projectId}
+
+	</update>
+	<update id="updateTempUp" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		UPDATE fund_cost
+		set
+			tempBanlance = tempBanlance + #{tempBanlance}
+		WHERE
+			projectId = #{projectId}
+
+	</update>
+
+<!--根据主键查询数据-->
+	<select id="selectInfoByPrimaryKey" resultType="com.meizx.project_fund_manager_system.dao.po.FundCostPO" parameterType="java.lang.String">
+		SELECT
+			 projectId, projectBudget, projectBalance, projectTotalAmount, tempBanlance
+		FROM fund_cost
+		<where>
+			projectId = #{id}
+		</where>
+	</select>
+
+<!--根据 主键 查询数据-->
+	<select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+		    count(id)
+		FROM fund_cost
+		<where>
+			projectId = #{projectId}
+		</where>
+	</select>
+
+<!--根据 FundCost 批量查询数据-->
+	<select id="queryList" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO" resultType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		SELECT *
+		FROM fund_cost
+		<where>
+			<if test="fundCostPO.projectId != null and fundCostPO.projectId != ''">
+				projectId = #{fundCostPO.projectId}
+			</if>
+			<if test="fundCostPO.projectBudget != null and fundCostPO.projectBudget != ''">
+				AND projectBudget = #{fundCostPO.projectBudget}
+			</if>
+			<if test="fundCostPO.projectBalance != null and fundCostPO.projectBalance != ''">
+				AND projectBalance = #{fundCostPO.projectBalance}
+			</if>
+			<if test="fundCostPO.projectTotalAmount != null and fundCostPO.projectTotalAmount != ''">
+				AND projectTotalAmount = #{fundCostPO.projectTotalAmount}
+			</if>
+		</where>
+	</select>
+
+<!--根据 FundCost 查询数据大小-->
+	<select id="querySize" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM fund_cost
+		<where>
+			<if test="fundCostPO.projectId != null and fundCostPO.projectId != ''">
+				projectId = #{fundCostPO.projectId}
+			</if>
+			<if test="fundCostPO.projectBudget != null and fundCostPO.projectBudget != ''">
+				AND projectBudget = #{fundCostPO.projectBudget}
+			</if>
+			<if test="fundCostPO.projectBalance != null and fundCostPO.projectBalance != ''">
+				AND projectBalance = #{fundCostPO.projectBalance}
+			</if>
+			<if test="fundCostPO.projectTotalAmount != null and fundCostPO.projectTotalAmount != ''">
+				AND projectTotalAmount = #{fundCostPO.projectTotalAmount}
+			</if>
+		</where>
+	</select>
+
+<!--根据 FundCost 分页查询数据
+		pageSize：分页大小
+		pageCount：当前页数-->
+	<select id="queryPage" parameterType="com.meizx.project_fund_manager_system.dao.po.FundCostPO" resultType="com.meizx.project_fund_manager_system.dao.po.FundCostPO">
+		SELECT *
+		FROM fund_cost
+		<where> 1 = 1
+			<if test="fundCostPO.projectId != null and fundCostPO.projectId != ''">
+				projectId = #{fundCostPO.projectId}
+			</if>
+			<if test="fundCostPO.projectBudget != null and fundCostPO.projectBudget != ''">
+				AND projectBudget = #{fundCostPO.projectBudget}
+			</if>
+			<if test="fundCostPO.projectBalance != null and fundCostPO.projectBalance != ''">
+				AND projectBalance = #{fundCostPO.projectBalance}
+			</if>
+			<if test="fundCostPO.projectTotalAmount != null and fundCostPO.projectTotalAmount != ''">
+				AND projectTotalAmount = #{fundCostPO.projectTotalAmount}
+			</if>
+		</where>
+		ORDER BY ${fundCostPO.fileName} ${fundCostPO.orders} limit #{pageCount}, 10
+	</select>
+</mapper>

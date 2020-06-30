@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- created by meizx-generate-1.0  mail:meizxbj@gmail.com-->
+<mapper namespace="com.meizx.project_fund_manager_system.dao.FundDetailDAO">
+
+<!-- 新增记录，会插入空值 -->
+	<insert id="insert" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		INSERT INTO fund_detail (
+			projectId,
+			fundId,
+			fundName,
+			fundDesc,
+			fundAmountOut,
+			fundAmountIn,
+			fundBalance,
+			commitMain,
+			commitUserId,
+			commitTime,
+			futureTime,
+			fundStatus,
+			fundInOrOut,
+			askStatus,
+			fundType,
+			toDoMark
+		)
+		VALUES (
+			#{projectId},
+			#{fundId},
+			#{fundName},
+			#{fundDesc},
+			#{fundAmountOut},
+			#{fundAmountIn},
+			#{fundBalance},
+			#{commitMain},
+			#{commitUserId},
+			NOW(),
+			#{futureTime},
+			#{fundStatus},
+			#{fundInOrOut},
+			#{askStatus},
+			#{fundType},
+			#{toDoMark}
+		)
+	</insert>
+
+<!-- 新增记录，不插入空值 -->
+	<insert id="insertBySelective" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		INSERT INTO fund_detail (
+			projectId,
+			fundId,
+			fundName,
+			fundDesc,
+			fundAmountOut,
+			fundAmountIn,
+			fundBalance,
+			commitMain,
+			commitUserId,
+			commitTime,
+			futureTime,
+			fundStatus,
+			fundInOrOut,
+			askStatus,
+			fundType
+		)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="projectId != null and projectId != ''">
+				#{projectId},
+			</if>
+			<if test="fundId != null and fundId != ''">
+				#{fundId},
+			</if>
+			<if test="fundName != null and fundName != ''">
+				#{fundName},
+			</if>
+			<if test="fundDesc != null and fundDesc != ''">
+				#{fundDesc},
+			</if>
+			<if test="fundAmountOut != null and fundAmountOut != ''">
+				#{fundAmountOut},
+			</if>
+			<if test="fundAmountIn != null and fundAmountIn != ''">
+				#{fundAmountIn},
+			</if>
+			<if test="fundBalance != null and fundBalance != ''">
+				#{fundBalance},
+			</if>
+			<if test="commitMain != null and commitMain != ''">
+				#{commitMain},
+			</if>
+			<if test="commitUserId != null and commitUserId != ''">
+				#{commitUserId},
+			</if>
+			<if test="commitTime != null and commitTime != ''">
+				#{commitTime},
+			</if>
+			<if test="futureTime != null and futureTime != ''">
+				#{futureTime},
+			</if>
+			<if test="fundStatus != null and fundStatus != ''">
+				#{fundStatus},
+			</if>
+			<if test="fundInOrOut != null and fundInOrOut != ''">
+				#{fundInOrOut},
+			</if>
+			<if test="askStatus != null and askStatus != ''">
+				#{askStatus},
+			</if>
+			<if test="fundType != null and fundType != ''">
+				#{fundType}
+			</if>
+		</trim>
+	</insert>
+
+<!--根据主键删除数据-->
+	<delete id="deleteByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		DELETE FROM fund_detail
+		<where>
+			 projectId = #{projectId}
+		</where>
+  	</delete>
+	<delete id="deleteByFundId" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		DELETE FROM fund_detail
+		<where>
+			fundId = #{fundId}
+		</where>
+  	</delete>
+
+<!--根据 FundDetail 删除数据-->
+	<delete id="delete" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		DELETE FROM fund_detail
+		where
+			projectId = #{projectId}
+		AND fundId = #{fundId}
+	</delete>
+
+	<update id="updateUp" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		UPDATE  fund_detail
+		set fundBalance = fundBalance + #{fundAmountOut}
+		where
+			projectId = #{projectId}
+		AND commitTime &gt;= #{commitTime}
+	</update><!--AND commitTime &lt;= #{commitTime}-->
+<!--根据主键修改数据-->
+	<update id="updateByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		UPDATE fund_detail
+		<set>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId},
+			</if>
+			<if test="fundId != null and fundId != ''">
+				fundId = #{fundId},
+			</if>
+			<if test="fundName != null and fundName != ''">
+				fundName = #{fundName},
+			</if>
+			<if test="fundDesc != null and fundDesc != ''">
+				fundDesc = #{fundDesc},
+			</if>
+			<if test="fundAmountOut != null and fundAmountOut != ''">
+				fundAmountOut = #{fundAmountOut},
+			</if>
+			<if test="fundAmountIn != null and fundAmountIn != ''">
+				fundAmountIn = #{fundAmountIn},
+			</if>
+			<if test="fundBalance != null and fundBalance != ''">
+				fundBalance = #{fundBalance},
+			</if>
+			<if test="commitMain != null and commitMain != ''">
+				commitMain = #{commitMain},
+			</if>
+			<if test="commitUserId != null and commitUserId != ''">
+				commitUserId = #{commitUserId},
+			</if>
+			<if test="commitTime != null and commitTime != ''">
+				commitTime = #{commitTime},
+			</if>
+			<if test="futureTime != null and futureTime != ''">
+				futureTime = #{futureTime},
+			</if>
+			<if test="fundStatus != null and fundStatus != ''">
+				fundStatus = #{fundStatus},
+			</if>
+			<if test="fundInOrOut != null and fundInOrOut != ''">
+				fundInOrOut = #{fundInOrOut},
+			</if>
+			<if test="askStatus != null and askStatus != ''">
+				askStatus = #{askStatus},
+			</if>
+			<if test="fundType != null and fundType != ''">
+				fundType = #{fundType}
+			</if>
+		</set>
+		<where>
+			projectId = #{projectId}
+		</where>
+	</update>
+
+<!--根据 FundDetail 修改数据-->
+	<update id="updateById" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		UPDATE fund_detail
+		set
+			fundStatus = #{fundStatus},
+			toDoMark = #{toDoMark}
+		where
+			projectId = #{projectId}
+		AND fundId = #{fundId}
+
+	</update>
+	<update id="update1" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		UPDATE fund_detail
+		set
+			fundStatus = #{fundStatus},
+			toDoMark = #{toDoMark}
+		where
+			projectId = #{projectId}
+		AND fundId = #{fundId}
+
+	</update>
+	<update id="update2" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		UPDATE fund_detail
+		set
+			fundAmountOut = #{fundAmountOut},
+			fundStatus = #{fundStatus},
+			toDoMark = #{toDoMark}
+		where
+			projectId = #{projectId}
+		AND fundId = #{fundId}
+	</update>
+	<update id="update3" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		UPDATE fund_detail
+		set
+			fundBalance = fundBalance - #{fundBalance}
+		where
+			projectId = #{projectId}
+		AND commitTime &gt;= #{commitTime}
+	</update>
+
+	<update id="update33" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		UPDATE fund_detail
+		set
+			fundBalance = fundBalance + #{fundBalance}
+		where
+			projectId = #{projectId}
+		AND commitTime &gt;= #{commitTime}
+	</update>
+
+<!--根据主键查询数据-->
+	<select id="selectInfoByPrimaryKey" resultType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO" parameterType="java.lang.String">
+		SELECT
+			 projectId, fundId, fundName, fundDesc, fundAmountOut, fundAmountIn, fundBalance, commitMain, commitUserId, commitTime, futureTime, fundStatus, fundInOrOut, askStatus, fundType
+		FROM fund_detail
+		<where>
+			projectId = #{id}
+		</where>
+	</select>
+	<select id="getInfo" resultType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		SELECT
+			 projectId, fundId, fundAmountOut,fundBalance,commitTime,fundStatus
+		FROM fund_detail
+		where
+			projectId = #{projectId}
+		AND	fundId = #{fundId}
+	</select>
+	<select id="getInfoById" resultType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO" parameterType="java.lang.String">
+		SELECT
+			 projectId, fundId, fundDesc, fundAmountOut, fundBalance, commitMain, commitUserId, commitTime, fundStatus
+		FROM fund_detail
+		where
+				fundId = #{fundId}
+	</select>
+
+<!--根据 主键 查询数据-->
+	<select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+		    count(id)
+		FROM fund_detail
+		<where>
+			projectId = #{projectId}
+		</where>
+	</select>
+
+<!--根据 FundDetail 批量查询数据-->
+	<select id="queryList" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO" resultType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO">
+		SELECT *
+		FROM fund_detail
+		<where>
+			<if test="fundDetailPO.projectId != null and fundDetailPO.projectId != ''">
+				projectId = #{fundDetailPO.projectId}
+			</if>
+			<if test="fundDetailPO.fundId != null and fundDetailPO.fundId != ''">
+				AND fundId = #{fundDetailPO.fundId}
+			</if>
+			<if test="fundDetailPO.fundName != null and fundDetailPO.fundName != ''">
+				AND fundName = #{fundDetailPO.fundName}
+			</if>
+			<if test="fundDetailPO.fundDesc != null and fundDetailPO.fundDesc != ''">
+				AND fundDesc = #{fundDetailPO.fundDesc}
+			</if>
+			<if test="fundDetailPO.fundAmountOut != null and fundDetailPO.fundAmountOut != ''">
+				AND fundAmountOut = #{fundDetailPO.fundAmountOut}
+			</if>
+			<if test="fundDetailPO.fundAmountIn != null and fundDetailPO.fundAmountIn != ''">
+				AND fundAmountIn = #{fundDetailPO.fundAmountIn}
+			</if>
+			<if test="fundDetailPO.fundBalance != null and fundDetailPO.fundBalance != ''">
+				AND fundBalance = #{fundDetailPO.fundBalance}
+			</if>
+			<if test="fundDetailPO.commitMain != null and fundDetailPO.commitMain != ''">
+				AND commitMain = #{fundDetailPO.commitMain}
+			</if>
+			<if test="fundDetailPO.commitUserId != null and fundDetailPO.commitUserId != ''">
+				AND commitUserId = #{fundDetailPO.commitUserId}
+			</if>
+			<if test="fundDetailPO.commitTime != null and fundDetailPO.commitTime != ''">
+				AND commitTime = #{fundDetailPO.commitTime}
+			</if>
+			<if test="fundDetailPO.commitTime != null and fundDetailPO.commitTime != ''">
+				AND commitTime &gt;= #{fundDetailPO.commitTime}
+			</if>
+			<if test="fundDetailPO.commitTime != null and fundDetailPO.commitTime != ''">
+				AND commitTime &lt;= #{fundDetailPO.commitTime}
+			</if>
+			<if test="fundDetailPO.futureTime != null and fundDetailPO.futureTime != ''">
+				AND futureTime = #{fundDetailPO.futureTime}
+			</if>
+			<if test="fundDetailPO.futureTime != null and fundDetailPO.futureTime != ''">
+				AND futureTime &gt;= #{fundDetailPO.futureTime}
+			</if>
+			<if test="fundDetailPO.futureTime != null and fundDetailPO.futureTime != ''">
+				AND futureTime &lt;= #{fundDetailPO.futureTime}
+			</if>
+			<if test="fundDetailPO.fundStatus != null and fundDetailPO.fundStatus != ''">
+				AND fundStatus = #{fundDetailPO.fundStatus}
+			</if>
+			<if test="fundDetailPO.fundInOrOut != null and fundDetailPO.fundInOrOut != ''">
+				AND fundInOrOut = #{fundDetailPO.fundInOrOut}
+			</if>
+			<if test="fundDetailPO.askStatus != null and fundDetailPO.askStatus != ''">
+				AND askStatus = #{fundDetailPO.askStatus}
+			</if>
+			<if test="fundDetailPO.fundType != null and fundDetailPO.fundType != ''">
+				AND fundType = #{fundDetailPO.fundType}
+			</if>
+		</where>
+	</select>
+
+<!--根据 FundDetail 查询数据大小-->
+	<select id="querySize" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM fund_detail
+		<where>
+				projectId = #{projectId}
+			<if test="fundStatus != 0">
+				AND fundStatus = #{fundStatus}
+			</if>
+			<if test="toDoMark != 500">
+				AND toDoMark = #{toDoMark}
+			</if>
+		</where>
+	</select>
+
+<!--根据 FundDetail 分页查询数据
+		pageSize：分页大小
+		pageCount：当前页数-->
+	<select id="queryPage" parameterType="com.meizx.project_fund_manager_system.dao.po.FundDetailPO" resultType="com.meizx.project_fund_manager_system.bo.FundDetailRspBO">
+		SELECT *
+		FROM fund_detail
+		<where>
+				projectId = #{fundDetailPO.projectId}
+			<if test="fundDetailPO.fundStatus != 0">
+				AND fundStatus = #{fundDetailPO.fundStatus}
+			</if>
+			<if test="fundDetailPO.toDoMark != 500">
+				AND toDoMark = #{fundDetailPO.toDoMark}
+			</if>
+
+		</where>
+		ORDER BY ${fundDetailPO.fieleName} asc limit #{pageCount}, 10
+	</select>
+</mapper>

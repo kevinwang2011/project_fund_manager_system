@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- created by meizx-generate-1.0  mail:meizxbj@gmail.com-->
+<mapper namespace="com.meizx.project_fund_manager_system.dao.FundPersonDAO">
+
+<!-- 新增记录，会插入空值 -->
+	<insert id="insert" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO">
+		INSERT INTO fund_person (
+			projectId,
+			projectGroup,
+			groupName
+		)
+		VALUES (
+			#{projectId},
+			#{projectGroup},
+			#{groupName}
+		)
+	</insert>
+
+<!-- 新增记录，不插入空值 -->
+	<insert id="insertBySelective" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO">
+		INSERT INTO fund_person (
+			projectId,
+			projectGroup
+		)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="projectId != null and projectId != ''">
+				#{projectId},
+			</if>
+			<if test="projectGroup != null and projectGroup != ''">
+				#{projectGroup}
+			</if>
+		</trim>
+	</insert>
+
+<!--根据主键删除数据-->
+	<delete id="deleteByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO">
+		DELETE FROM fund_person
+		<where>
+			 projectId = #{projectId}
+		</where>
+  	</delete>
+
+<!--根据 FundPerson 删除数据-->
+	<delete id="delete" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO">
+		DELETE FROM fund_person
+		<where>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId}
+			</if>
+			<if test="projectGroup != null and projectGroup != ''">
+				AND projectGroup = #{projectGroup}
+			</if>
+		</where>
+	</delete>
+
+<!--根据主键修改数据-->
+	<update id="updateByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO">
+		UPDATE fund_person
+		<set>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId},
+			</if>
+			<if test="projectGroup != null and projectGroup != ''">
+				projectGroup = #{projectGroup}
+			</if>
+		</set>
+		<where>
+			projectId = #{projectId}
+		</where>
+	</update>
+
+<!--根据 FundPerson 修改数据-->
+	<update id="update" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO">
+		UPDATE fund_person
+		set
+			projectGroup = #{projectGroup},
+			groupName = #{groupName}
+		<where>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId}
+			</if>
+		</where>
+	</update>
+
+<!--根据主键查询数据-->
+	<select id="selectInfoByPrimaryKey" resultType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO" parameterType="java.lang.String">
+		SELECT
+			 projectId, projectGroup, groupName
+		FROM fund_person
+		<where>
+			projectId = #{id}
+		</where>
+	</select>
+
+<!--根据 主键 查询数据-->
+	<select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+		    count(id)
+		FROM fund_person
+		<where>
+			projectId = #{projectId}
+		</where>
+	</select>
+
+<!--根据 FundPerson 批量查询数据-->
+	<select id="queryList" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO" resultType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO">
+		SELECT *
+		FROM fund_person
+		<where>
+			<if test="fundPersonPO.projectId != null and fundPersonPO.projectId != ''">
+				projectId = #{fundPersonPO.projectId}
+			</if>
+			<if test="fundPersonPO.projectGroup != null and fundPersonPO.projectGroup != ''">
+				AND projectGroup = #{fundPersonPO.projectGroup}
+			</if>
+		</where>
+	</select>
+
+<!--根据 FundPerson 查询数据大小-->
+	<select id="querySize" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM fund_person
+		<where>
+			<if test="fundPersonPO.projectId != null and fundPersonPO.projectId != ''">
+				projectId = #{fundPersonPO.projectId}
+			</if>
+			<if test="fundPersonPO.projectGroup != null and fundPersonPO.projectGroup != ''">
+				AND projectGroup = #{fundPersonPO.projectGroup}
+			</if>
+		</where>
+	</select>
+
+<!--根据 FundPerson 分页查询数据
+		pageSize：分页大小
+		pageCount：当前页数-->
+	<select id="queryPage" parameterType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO" resultType="com.meizx.project_fund_manager_system.dao.po.FundPersonPO">
+		SELECT *
+		FROM fund_person
+		<where> 1 = 1
+			<if test="fundPersonPO.projectId != null and fundPersonPO.projectId != ''">
+				projectId = #{fundPersonPO.projectId}
+			</if>
+			<if test="fundPersonPO.projectGroup != null and fundPersonPO.projectGroup != ''">
+				AND projectGroup = #{fundPersonPO.projectGroup}
+			</if>
+		</where>
+		ORDER BY ${fundPersonPO.fileName} ${fundPersonPO.orders} limit #{pageCount}, 10
+	</select>
+</mapper>

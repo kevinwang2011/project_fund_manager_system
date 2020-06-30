@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- created by meizx-generate-1.0  mail:meizxbj@gmail.com-->
+<mapper namespace="com.meizx.project_fund_manager_system.dao.FundRelatDAO">
+
+<!-- 新增记录，会插入空值 -->
+	<insert id="insert" parameterType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO">
+		INSERT INTO fund_relat (
+			userId,
+			projectId,
+			relatStatus
+		)
+		VALUES (
+			#{userId},
+			#{projectId},
+			#{relatStatus}
+		)
+	</insert>
+
+<!-- 新增记录，不插入空值 -->
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO fund_relat (
+			userId,
+			projectId,
+			relatStatus
+		)
+		values
+		<foreach collection ="list" item="fundRelatPO" index= "index" separator =",">
+		(
+			<if test="fundRelatPO.userId != null and fundRelatPO.userId != ''">
+				#{fundRelatPO.userId},
+			</if>
+			<if test="fundRelatPO.projectId != null and fundRelatPO.projectId != ''">
+				#{fundRelatPO.projectId},
+			</if>
+
+				#{fundRelatPO.relatStatus}
+
+		)
+		</foreach >
+	</insert>
+
+<!--根据主键删除数据-->
+	<delete id="deleteByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO">
+		DELETE FROM fund_relat
+		<where>
+			projectId = #{projectId}
+		</where>
+  	</delete>
+
+<!--根据 FundRelat 删除数据-->
+	<delete id="delete" parameterType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO">
+		DELETE FROM fund_relat
+		<where>
+			<if test="userId != null and userId != ''">
+				userId = #{userId}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND projectId = #{projectId}
+			</if>
+		</where>
+	</delete>
+
+<!--根据主键修改数据-->
+	<update id="updateByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO">
+		UPDATE fund_relat
+		<set>
+			<if test="userId != null and userId != ''">
+				userId = #{userId},
+			</if>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId}
+			</if>
+		</set>
+		<where>
+		</where>
+	</update>
+
+<!--根据 FundRelat 修改数据-->
+	<update id="update" parameterType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO">
+		UPDATE fund_relat
+		<set>
+			<if test="userId != null and userId != ''">
+				userId = #{userId},
+			</if>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId}
+			</if>
+		</set>
+		<where>
+			<if test="userId != null and userId != ''">
+				userId = #{userId}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND projectId = #{projectId}
+			</if>
+		</where>
+	</update>
+
+<!--根据主键查询数据-->
+	<select id="selectInfoByPrimaryKey" resultType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO" parameterType="java.lang.String">
+		SELECT
+			 userId, projectId
+		FROM fund_relat
+		<where>
+		</where>
+	</select>
+
+<!--根据 主键 查询数据-->
+	<select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+		    count(id)
+		FROM fund_relat
+		<where>
+		</where>
+	</select>
+
+<!--根据 FundRelat 批量查询数据-->
+	<select id="queryList" parameterType="java.lang.String" resultType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO">
+		SELECT
+			a.projectId,
+			a.projectName,
+			a.projectStatus
+		FROM fund_project a, fund_relat b
+		WHERE a.projectId = b.projectId AND b.relatStatus = 1 AND b.userId = #{userId}
+	</select>
+	<select id="queryData" parameterType="java.lang.String" resultType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO">
+		SELECT
+			a.projectId,
+			a.projectName,
+			a.projectStatus
+		FROM fund_project a, fund_relat b
+		WHERE a.projectId = b.projectId AND b.userId = #{userId}
+	</select>
+
+<!--根据 FundRelat 查询数据大小-->
+	<select id="querySize" parameterType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM fund_relat
+		<where>
+			<if test="fundRelatPO.userId != null and fundRelatPO.userId != ''">
+				userId = #{fundRelatPO.userId}
+			</if>
+			<if test="fundRelatPO.projectId != null and fundRelatPO.projectId != ''">
+				AND projectId = #{fundRelatPO.projectId}
+			</if>
+		</where>
+	</select>
+
+<!--根据 FundRelat 分页查询数据
+		pageSize：分页大小
+		pageCount：当前页数-->
+	<select id="queryPage" parameterType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO" resultType="com.meizx.project_fund_manager_system.dao.po.FundRelatPO">
+		SELECT *
+		FROM fund_relat
+		<where> 1 = 1
+			<if test="fundRelatPO.userId != null and fundRelatPO.userId != ''">
+				userId = #{fundRelatPO.userId}
+			</if>
+			<if test="fundRelatPO.projectId != null and fundRelatPO.projectId != ''">
+				AND projectId = #{fundRelatPO.projectId}
+			</if>
+		</where>
+		ORDER BY ${fundRelatPO.fileName} ${fundRelatPO.orders} limit #{pageCount}, 10
+	</select>
+</mapper>

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- created by meizx-generate-1.0  mail:meizxbj@gmail.com-->
+<mapper namespace="com.meizx.project_fund_manager_system.dao.FundProjectDAO">
+
+<!-- 新增记录，会插入空值 -->
+	<insert id="insert" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO">
+		INSERT INTO fund_project (
+			projectId,
+			projectName,
+			projectStatus,
+			projectType,
+			projectMain,
+			userId,
+			applicatType,
+			createTime,
+			toDoMark
+		)
+		VALUES (
+			#{projectId},
+			#{projectName},
+			#{projectStatus},
+			#{projectType},
+			#{projectMain},
+			#{userId},
+			#{applicatType},
+			NOW(),
+			#{toDoMark}
+		)
+	</insert>
+
+<!-- 新增记录，不插入空值 -->
+	<insert id="insertBySelective" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO">
+		INSERT INTO fund_project (
+			projectId,
+			projectName,
+			projectStatus,
+			projectType,
+			projectMain,
+			userId,
+			applicatType,
+			createTime
+		)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="projectId != null and projectId != ''">
+				#{projectId},
+			</if>
+			<if test="projectName != null and projectName != ''">
+				#{projectName},
+			</if>
+			<if test="projectStatus != null and projectStatus != ''">
+				#{projectStatus},
+			</if>
+			<if test="projectType != null and projectType != ''">
+				#{projectType},
+			</if>
+			<if test="projectMain != null and projectMain != ''">
+				#{projectMain},
+			</if>
+			<if test="userId != null and userId != ''">
+				#{userId},
+			</if>
+			<if test="applicatType != null and applicatType != ''">
+				#{applicatType},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				#{createTime}
+			</if>
+		</trim>
+	</insert>
+
+<!--根据主键删除数据-->
+	<delete id="deleteByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO">
+		DELETE FROM fund_project
+		<where>
+			 projectId = #{projectId}
+		</where>
+  	</delete>
+
+<!--根据 FundProject 删除数据-->
+	<delete id="delete" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO">
+		DELETE FROM fund_project
+		<where>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId}
+			</if>
+			<if test="projectName != null and projectName != ''">
+				AND projectName = #{projectName}
+			</if>
+			<if test="projectStatus != null and projectStatus != ''">
+				AND projectStatus = #{projectStatus}
+			</if>
+			<if test="projectType != null and projectType != ''">
+				AND projectType = #{projectType}
+			</if>
+			<if test="projectMain != null and projectMain != ''">
+				AND projectMain = #{projectMain}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND userId = #{userId}
+			</if>
+			<if test="applicatType != null and applicatType != ''">
+				AND applicatType = #{applicatType}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime = #{createTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime &gt;= #{createTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime &lt;= #{createTime}
+			</if>
+		</where>
+	</delete>
+
+<!--根据主键修改数据-->
+	<update id="updateByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO">
+		UPDATE fund_project
+		<set>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId},
+			</if>
+			<if test="projectName != null and projectName != ''">
+				projectName = #{projectName},
+			</if>
+			<if test="projectStatus != null and projectStatus != ''">
+				projectStatus = #{projectStatus},
+			</if>
+			<if test="projectType != null and projectType != ''">
+				projectType = #{projectType},
+			</if>
+			<if test="projectMain != null and projectMain != ''">
+				projectMain = #{projectMain},
+			</if>
+			<if test="userId != null and userId != ''">
+				userId = #{userId},
+			</if>
+			<if test="applicatType != null and applicatType != ''">
+				applicatType = #{applicatType},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				createTime = #{createTime}
+			</if>
+		</set>
+		<where>
+			projectId = #{projectId}
+		</where>
+	</update>
+
+<!--根据 FundProject 修改数据-->
+	<update id="update" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO">
+		UPDATE fund_project
+		<set>
+			<if test="projectStatus &gt;= 0 and projectStatus &lt;= 10">
+				projectStatus = #{projectStatus},
+			</if>
+			<if test="toDoMark &gt;= 0 and toDoMark &lt;= 1">
+				toDoMark = #{toDoMark}
+			</if>
+		</set>
+		<where>
+			<if test="projectId != null and projectId != ''">
+				projectId = #{projectId}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND (userId = #{userId} OR userId IN (SELECT userId FROM user WHERE roles = "['admin']"))
+			</if>
+		</where>
+	</update>
+
+<!--根据主键查询数据-->
+	<select id="selectInfoByPrimaryKey" resultType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO" parameterType="java.lang.String">
+		SELECT
+			 projectId, projectName, projectStatus, projectType, projectMain, userId, applicatType, createTime
+		FROM fund_project
+		<where>
+			projectId = #{id}
+		</where>
+	</select>
+	<select id="selectInfoById" resultType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO" parameterType="java.lang.String">
+		SELECT
+			 a.projectId, a.projectName, a.projectStatus, a.projectType, a.projectMain, a.userId, a.applicatType, a.createTime
+		FROM fund_project a LEFT JOIN fund_cost c ON a.projectId = c.projectId
+		where
+			a.projectId = #{id} AND a.projectStatus != 2 AND c.whereBalance !=500
+	</select>
+
+<!--根据 主键 查询数据-->
+	<select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+		    count(projectId)
+		FROM fund_project
+		<where>
+			projectId = #{id}
+		</where>
+	</select>
+
+<!--根据 FundProject 批量查询数据-->
+	<select id="queryList" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO" resultType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO">
+		SELECT projectId, projectName, projectStatus
+		FROM fund_project
+	</select>
+
+<!--根据 FundProject 查询数据大小-->
+	<select id="querySize" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM
+		 	fund_project a
+		<where> 1=1
+			<if test="projectId != null and projectId != ''">
+				And a.projectId = #{projectId}
+			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.projectName LIKE CONCAT('%',#{projectName},'%')
+			</if>
+			<if test="projectStatus != 500 and projectStatus != 2">
+				AND a.projectStatus = #{projectStatus}
+			</if>
+			<if test="projectStatus != 500 and projectStatus == 2">
+				AND (a.projectStatus = #{projectStatus} OR a.projectStatus = 3)
+			</if>
+			<if test="toDoMark != 500">
+				AND a.toDoMark = #{toDoMark}
+			</if>
+			AND (
+				a.userId = #{userId}
+				OR #{userId} IN (SELECT userId FROM user WHERE roles = "['admin']")
+			)
+		</where>
+	</select>
+<!--根据 FundProject 查询数据大小-->
+	<select id="queryQuerySize" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM
+			fund_relat d
+		LEFT JOIN
+		 	fund_project a
+		ON
+			d.projectId = a.projectId
+		<where> 1=1
+			<if test="projectId != null and projectId != ''">
+				And a.projectId = #{projectId}
+			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.projectName LIKE CONCAT('%',#{projectName},'%')
+			</if>
+			<if test="projectStatus != 500 and projectStatus != 2">
+				AND a.projectStatus = #{projectStatus}
+			</if>
+			<if test="projectStatus != 500 and projectStatus == 2">
+				AND (a.projectStatus = #{projectStatus} OR a.projectStatus = 3)
+			</if>
+			<if test="toDoMark != 500">
+				AND a.toDoMark = #{toDoMark}
+			</if>
+			AND (
+				d.userId = #{userId}
+				OR #{userId} IN (SELECT userId FROM user WHERE roles = "['admin']")
+			)
+		</where>
+	</select>
+
+<!--根据 FundProject 分页查询数据
+		pageSize：分页大小
+		pageCount：当前页数-->
+	<select id="queryPage" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO" resultType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO">
+		SELECT *
+		FROM fund_project
+		<where> 1 = 1
+			<if test="fundProjectPO.projectId != null and fundProjectPO.projectId != ''">
+				projectId = #{fundProjectPO.projectId}
+			</if>
+			<if test="fundProjectPO.projectName != null and fundProjectPO.projectName != ''">
+				AND projectName = #{fundProjectPO.projectName}
+			</if>
+			<if test="fundProjectPO.projectStatus != null and fundProjectPO.projectStatus != ''">
+				AND projectStatus = #{fundProjectPO.projectStatus}
+			</if>
+			<if test="fundProjectPO.projectType != null and fundProjectPO.projectType != ''">
+				AND projectType = #{fundProjectPO.projectType}
+			</if>
+			<if test="fundProjectPO.projectMain != null and fundProjectPO.projectMain != ''">
+				AND projectMain = #{fundProjectPO.projectMain}
+			</if>
+			<if test="fundProjectPO.userId != null and fundProjectPO.userId != ''">
+				AND userId = #{fundProjectPO.userId}
+			</if>
+			<if test="fundProjectPO.applicatType != null and fundProjectPO.applicatType != ''">
+				AND applicatType = #{fundProjectPO.applicatType}
+			</if>
+			<if test="fundProjectPO.createTime != null and fundProjectPO.createTime != ''">
+				AND createTime = #{fundProjectPO.createTime}
+			</if>
+			<if test="fundProjectPO.createTime != null and fundProjectPO.createTime != ''">
+				AND createTime &gt;= #{fundProjectPO.createTime}
+			</if>
+			<if test="fundProjectPO.createTime != null and fundProjectPO.createTime != ''">
+				AND createTime &lt;= #{fundProjectPO.createTime}
+			</if>
+		</where>
+		ORDER BY ${fundProjectPO.fieleName} ${fundProjectPO.orders} limit #{pageCount}, 10
+	</select>
+	<!--根据 FundProject 分页查询数据
+		pageSize：分页大小
+		pageCount：当前页数-->
+	<select id="queryPage3" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO" resultType="com.meizx.project_fund_manager_system.bo.FundProjectRspBO">
+		SELECT
+		a.projectId,
+		a.projectName,
+		a.projectStatus,
+		a.userId,
+		a.applicatType,
+		a.createTime,
+		a.toDoMark,
+		c.projectBudget,
+		c.projectBalance,
+		c.projectTotalAmount,
+		c.tempBanlance,
+		c.whereBalance,
+		b.groupName
+		FROM
+		(
+		fund_project a
+		LEFT JOIN
+		fund_person b
+		ON
+		a.projectId = b.projectId
+		)
+		LEFT JOIN
+		fund_cost c
+		ON
+		a.projectId = c.projectId
+		<where> 1=1
+			<if test="fundProjectPO.projectId != null and fundProjectPO.projectId != ''">
+				AND a.projectId = #{fundProjectPO.projectId}
+			</if>
+			<if test="fundProjectPO.projectName != null and fundProjectPO.projectName != ''">
+				AND a.projectName LIKE CONCAT('%',#{fundProjectPO.projectName},'%')
+			</if>
+			<if test="fundProjectPO.projectStatus != 500 and fundProjectPO.projectStatus != 2">
+				AND a.projectStatus = #{fundProjectPO.projectStatus}
+			</if>
+			<if test="fundProjectPO.projectStatus != 500 and fundProjectPO.projectStatus == 2">
+				AND (a.projectStatus = #{fundProjectPO.projectStatus} OR a.projectStatus = 3)
+			</if>
+			<if test="fundProjectPO.toDoMark != 500">
+				AND a.toDoMark = #{fundProjectPO.toDoMark}
+			</if>
+			AND (a.userId = #{fundProjectPO.userId}
+			OR #{fundProjectPO.userId} IN (SELECT userId FROM user WHERE roles = "['admin']"))
+		</where>
+		ORDER BY ${fundProjectPO.fieleName} ${fundProjectPO.orders} limit #{pageCount}, 10
+	</select>	<!--根据 FundProject 分页查询数据
+		pageSize：分页大小
+		pageCount：当前页数-->
+	<select id="queryQuery" parameterType="com.meizx.project_fund_manager_system.dao.po.FundProjectPO" resultType="com.meizx.project_fund_manager_system.bo.FundProjectRspBO">
+		SELECT
+		a.projectId,
+		a.projectName,
+		a.projectStatus,
+		a.userId,
+		a.applicatType,
+		a.createTime,
+		a.toDoMark,
+		c.projectBudget,
+		c.projectBalance,
+		c.projectTotalAmount,
+		c.tempBanlance,
+		b.groupName,
+		d.relatStatus
+		FROM
+		fund_relat d
+		LEFT JOIN
+		(
+		(
+		fund_project a
+		LEFT JOIN
+		fund_person b
+		ON
+		a.projectId = b.projectId
+		)
+		LEFT JOIN
+		fund_cost c
+		ON
+		a.projectId = c.projectId
+		)
+		ON d.projectId = a.projectId
+		<where> 1=1
+			<if test="fundProjectPO.projectId != null and fundProjectPO.projectId != ''">
+				AND a.projectId = #{fundProjectPO.projectId}
+			</if>
+			<if test="fundProjectPO.projectName != null and fundProjectPO.projectName != ''">
+				AND a.projectName LIKE CONCAT('%',#{fundProjectPO.projectName},'%')
+			</if>
+			<if test="fundProjectPO.projectStatus != 500 and fundProjectPO.projectStatus != 2">
+				AND a.projectStatus = #{fundProjectPO.projectStatus}
+			</if>
+			<if test="fundProjectPO.projectStatus != 500 and fundProjectPO.projectStatus == 2">
+				AND (a.projectStatus = #{fundProjectPO.projectStatus} OR a.projectStatus = 3)
+			</if>
+			<if test="fundProjectPO.toDoMark != 500">
+				AND a.toDoMark = #{fundProjectPO.toDoMark}
+			</if>
+			AND d.userId = #{fundProjectPO.userId}
+		</where>
+		ORDER BY ${fundProjectPO.fieleName} ${fundProjectPO.orders} limit #{pageCount}, 10
+	</select>
+</mapper>

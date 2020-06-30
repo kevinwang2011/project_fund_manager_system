@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- created by meizx-generate-1.0  mail:meizxbj@gmail.com-->
+<mapper namespace="com.meizx.project_fund_manager_system.dao.UserDAO">
+
+<!-- 新增记录，会插入空值 -->
+	<insert id="insert" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO">
+		INSERT INTO user (
+			userId,
+			userName,
+			userPwd,
+			userStatus,
+			userMark,
+			userMail,
+			createTime,
+			roles
+		)
+		VALUES (
+			#{userId},
+			#{userName},
+			#{userPwd},
+			#{userStatus},
+			#{userMark},
+			#{userMail},
+			NOW(),
+			#{roles}
+		)
+	</insert>
+
+<!-- 新增记录，不插入空值 -->
+	<insert id="insertBySelective" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO">
+		INSERT INTO user (
+			userId,
+			userName,
+			userPwd,
+			userStatus,
+			userMark,
+			userMail,
+			createTime,
+			roles
+		)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null and userId != ''">
+				#{userId},
+			</if>
+			<if test="userName != null and userName != ''">
+				#{userName},
+			</if>
+			<if test="userPwd != null and userPwd != ''">
+				#{userPwd},
+			</if>
+			<if test="userStatus != null and userStatus != ''">
+				#{userStatus},
+			</if>
+			<if test="userMark != null and userMark != ''">
+				#{userMark},
+			</if>
+			<if test="userMail != null and userMail != ''">
+				#{userMail},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				#{createTime},
+			</if>
+			<if test="roles != null and roles != ''">
+				#{roles}
+			</if>
+		</trim>
+	</insert>
+
+<!--根据主键删除数据-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		DELETE FROM user
+		where
+			userId = #{userId}
+  	</delete>
+
+<!--根据 User 删除数据-->
+	<delete id="delete" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO">
+		DELETE FROM user
+		<where>
+			<if test="userId != null and userId != ''">
+				userId = #{userId}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND userName = #{userName}
+			</if>
+			<if test="userPwd != null and userPwd != ''">
+				AND userPwd = #{userPwd}
+			</if>
+			<if test="userStatus != null and userStatus != ''">
+				AND userStatus = #{userStatus}
+			</if>
+			<if test="userMark != null and userMark != ''">
+				AND userMark = #{userMark}
+			</if>
+			<if test="userMail != null and userMail != ''">
+				AND userMail = #{userMail}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime = #{createTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime &gt;= #{createTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime &lt;= #{createTime}
+			</if>
+		</where>
+	</delete>
+
+<!--根据主键修改数据-->
+	<update id="updateByPrimaryKey" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO">
+		UPDATE user
+		<set>
+			<if test="userId != null and userId != ''">
+				userId = #{userId},
+			</if>
+			<if test="userName != null and userName != ''">
+				userName = #{userName},
+			</if>
+			<if test="userPwd != null and userPwd != ''">
+				userPwd = #{userPwd},
+			</if>
+			<if test="userStatus != null and userStatus != ''">
+				userStatus = #{userStatus},
+			</if>
+			<if test="userMark != null and userMark != ''">
+				userMark = #{userMark},
+			</if>
+			<if test="userMail != null and userMail != ''">
+				userMail = #{userMail},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				createTime = #{createTime},
+			</if>
+			<if test="roles != null and roles != ''">
+				roles = #{roles}
+			</if>
+		</set>
+		<where>
+		</where>
+	</update>
+
+	<update id="updateByUserId" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO">
+		UPDATE user
+		set
+			userPwd = #{userPwd}
+		where
+			userId = #{userId}
+	</update>
+
+<!--根据 User 修改数据-->
+	<update id="update" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO">
+		UPDATE user
+		<set>
+			<if test="userName != null and userName != ''">
+				userName = #{userName},
+			</if>
+			<if test="userPwd != null and userPwd != ''">
+				userPwd = #{userPwd},
+			</if>
+			<if test="userStatus >=0 and userStatus &lt;=2">
+				userStatus = #{userStatus},
+			</if>
+			<if test="userMark != null and userMark != ''">
+				userMark = #{userMark},
+			</if>
+			<if test="userMail != null and userMail != ''">
+				userMail = #{userMail},
+			</if>
+			<if test="roles != null and roles != ''">
+				roles = #{roles}
+			</if>
+		</set>
+		where
+				userId = #{userId}
+	</update>
+
+<!--根据主键查询数据-->
+	<select id="selectInfoByPrimaryKey" resultType="com.meizx.project_fund_manager_system.dao.po.UserPO" parameterType="java.lang.String">
+		SELECT
+			 userId, userName, userPwd, userStatus, userMark, userMail, createTime, roles
+		FROM user
+		<where>
+			userId = #{userId}
+			AND userStatus=2
+		</where>
+	</select>
+
+	<!--根据用户名和密码查询数据-->
+	<select id="getInfoByPwd" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+			 count(id)
+		FROM user
+		<where>
+			userId=#{userId}
+			AND userPwd=#{pwd}
+			AND userStatus=2
+		</where>
+	</select>
+
+	<!--根据用户名查询数据-->
+	<select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+			 count(id)
+		FROM user
+		<where>
+			userId=#{userId}
+			AND userStatus >= 0
+			AND userStatus &lt;= 2
+		</where>
+	</select>
+
+	<!--根据用户名查询数据-->
+	<select id="getCountRelat" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT
+			userName
+		FROM user
+		<where>
+			userId=#{userId}
+			AND userStatus = 2
+		</where>
+	</select>
+
+<!--根据 User 批量查询数据-->
+	<select id="queryList" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO" resultType="com.meizx.project_fund_manager_system.dao.po.UserPO">
+		SELECT *
+		FROM user
+		<where>
+			<if test="userId != null and userId != ''">
+				userId = #{userId}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND userName = #{userName}
+			</if>
+			<if test="userPwd != null and userPwd != ''">
+				AND userPwd = #{userPwd}
+			</if>
+			<if test="userStatus != null and userStatus != ''">
+				AND userStatus = #{userStatus}
+			</if>
+			<if test="userMark != null and userMark != ''">
+				AND userMark = #{userMark}
+			</if>
+			<if test="userMail != null and userMail != ''">
+				AND userMail = #{userMail}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime = #{createTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime &gt;= #{createTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime &lt;= #{createTime}
+			</if>
+		</where>
+	</select>
+
+<!--根据 User 查询数据大小-->
+	<select id="querySize" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM user
+		<where> 1=1
+			<if test="userId != null and userId != ''">
+				AND userId = #{userId}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND userName = #{userName}
+			</if>
+			<if test="userPwd != null and userPwd != ''">
+				AND userPwd = #{userPwd}
+			</if>
+			<if test="userStatus >=0 and userStatus &lt;=2 ">
+				AND userStatus = #{userStatus}
+			</if>
+			<if test="userMark != null and userMark != ''">
+				AND userMark = #{userMark}
+			</if>
+			<if test="userMail != null and userMail != ''">
+				AND userMail = #{userMail}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime = #{createTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime &gt;= #{createTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime &lt;= #{createTime}
+			</if>
+			AND roles !="['admin']"
+		</where>
+	</select>
+
+<!--根据 User 分页查询数据
+		pageSize：分页大小
+		pageCount：当前页数-->
+	<select id="queryPage" parameterType="com.meizx.project_fund_manager_system.dao.po.UserPO" resultType="com.meizx.project_fund_manager_system.dao.po.UserPO">
+		SELECT userId,
+		userName,
+		userStatus,
+		userMark,
+		createTime
+		FROM user
+		<where> 1=1
+			<if test="userPO.userId != null and userPO.userId != ''">
+				 AND userId = #{userPO.userId}
+			</if>
+					<if test="userPO.userName != null and userPO.userName != ''">
+				AND userName = #{userPO.userName}
+			</if>
+					<if test="userPO.userPwd != null and userPO.userPwd != ''">
+				AND userPwd = #{userPO.userPwd}
+			</if>
+					<if test="userPO.userStatus >=0  and userPO.userStatus &lt;=2 ">
+				AND userStatus = #{userPO.userStatus}
+			</if>
+					<if test="userPO.userMark != null and userPO.userMark != ''">
+				AND userMark = #{userPO.userMark}
+			</if>
+					<if test="userPO.userMail != null and userPO.userMail != ''">
+				AND userMail = #{userPO.userMail}
+			</if>
+					<if test="userPO.createTime != null and userPO.createTime != ''">
+				AND createTime = #{userPO.createTime}
+			</if>
+			<if test="userPO.createTime != null and userPO.createTime != ''">
+				AND createTime &gt;= #{userPO.createTime}
+			</if>
+			<if test="userPO.createTime != null and userPO.createTime != ''">
+				AND createTime &lt;= #{userPO.createTime}
+			</if>
+			AND roles !="['admin']"
+		</where>
+		ORDER BY ${userPO.FieleName} ${userPO.Orders} limit #{pageCount}, 10
+	</select>
+</mapper>
